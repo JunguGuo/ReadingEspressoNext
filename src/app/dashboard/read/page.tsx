@@ -1,3 +1,3 @@
 export default function ReadPage() {
-  return <div> Read Page</div>;
+  return <div> Read Page1</div>;
 }

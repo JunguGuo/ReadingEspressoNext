@@ -7,12 +7,12 @@ import { Download as DownloadIcon } from '@phosphor-icons/react/dist/ssr/Downloa
 import { Plus as PlusIcon } from '@phosphor-icons/react/dist/ssr/Plus';
 import { Upload as UploadIcon } from '@phosphor-icons/react/dist/ssr/Upload';
 import { PrismaClient } from '@prisma/client';
+import type { Read } from '@prisma/client';
 import dayjs from 'dayjs';
 
 import { config } from '@/config';
 import { CustomersFilters } from '@/components/dashboard/customer/customers-filters';
 import { ReadsTable } from '@/components/dashboard/read/reads-table';
-import type { Read } from '@/components/dashboard/read/reads-table';
 
 export const metadata = { title: `Reads | Dashboard | ${config.site.name}` } satisfies Metadata;
 
@@ -29,15 +29,15 @@ export const metadata = { title: `Reads | Dashboard | ${config.site.name}` } sat
 const prisma = new PrismaClient();
 
 // Utility function to transform fetched data
-const transformToRead = (data: any[]): Read[] => {
-  return data.map((item) => ({
-    id: item._id,
-    title: item.title,
-    author: item.author,
-    content: item.content,
-    createdAt: new Date(item.createdAt),
-  }));
-};
+// const transformToRead = (data: any[]): Read[] => {
+//   return data.map((item) => ({
+//     id: item._id,
+//     title: item.title,
+//     author: item.author,
+//     content: item.content,
+//     createdAt: new Date(item.createdAt),
+//   }));
+// };
 
 export default async function Page(): React.JSX.Element {
   // const test = await prisma.read.create({
@@ -55,12 +55,12 @@ export default async function Page(): React.JSX.Element {
   //     region: 'Test Region',
   //   },
   // });
-  const data = await prisma.read.findMany();
+  const reads = (await prisma.read.findMany()) satisfies Read[];
   // console.log(test);
 
   // const response = await fetch('http://127.0.0.1:3001/api/v1/reads');
   // const data = await response.json();
-  const reads = transformToRead(data) satisfies Read[];
+  // const reads = transformToRead(data) satisfies Read[];
   //console.log(reads);
 
   const page = 0;

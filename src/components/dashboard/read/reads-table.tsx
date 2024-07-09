@@ -13,16 +13,9 @@ import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import Typography from '@mui/material/Typography';
+import type { Read } from '@prisma/client';
 
 import { useSelection } from '@/hooks/use-selection';
-
-export interface Read {
-  id: string;
-  title: string;
-  author: string;
-  content: string;
-  createdAt: Date;
-}
 
 interface ReadsTableProps {
   count: number;

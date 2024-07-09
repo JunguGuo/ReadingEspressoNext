@@ -6,6 +6,7 @@ import Typography from '@mui/material/Typography';
 import { Download as DownloadIcon } from '@phosphor-icons/react/dist/ssr/Download';
 import { Plus as PlusIcon } from '@phosphor-icons/react/dist/ssr/Plus';
 import { Upload as UploadIcon } from '@phosphor-icons/react/dist/ssr/Upload';
+import { PrismaClient } from '@prisma/client';
 import dayjs from 'dayjs';
 
 import { config } from '@/config';
@@ -25,6 +26,8 @@ export const metadata = { title: `Reads | Dashboard | ${config.site.name}` } sat
 //   },
 // ] satisfies Read[];
 
+const prisma = new PrismaClient();
+
 // Utility function to transform fetched data
 const transformToRead = (data: any[]): Read[] => {
   return data.map((item) => ({
@@ -37,10 +40,28 @@ const transformToRead = (data: any[]): Read[] => {
 };
 
 export default async function Page(): React.JSX.Element {
-  const response = await fetch('http://127.0.0.1:3001/api/v1/reads');
-  const data = await response.json();
-  const reads = transformToRead(data.data.reads) satisfies Read[];
-  console.log(reads);
+  // const test = await prisma.read.create({
+  //   data: {
+  //     title: 'Test Read',
+  //     author: 'Test Author',
+  //     content: 'Test Content',
+  //     createdAt: new Date(),
+  //     age: 30,
+  //     year: 2022,
+  //     yearStr: '2022',
+  //     intro: 'test',
+  //     curator: 'Test Curator',
+  //     comment: 'test comment',
+  //     region: 'Test Region',
+  //   },
+  // });
+  const data = await prisma.read.findMany();
+  // console.log(test);
+
+  // const response = await fetch('http://127.0.0.1:3001/api/v1/reads');
+  // const data = await response.json();
+  const reads = transformToRead(data) satisfies Read[];
+  //console.log(reads);
 
   const page = 0;
   const rowsPerPage = 5;
